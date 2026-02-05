@@ -1,6 +1,7 @@
 let mongoose=require("mongoose")
 let express=require("express")
 let bcrypt=require("bcrypt")
+require("dotenv").config();
 let app=express();
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))

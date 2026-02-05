@@ -77,8 +77,8 @@ exports.profile=async(req,res)=>{
     try{
     cloudinary.config({ 
         cloud_name: 'dayvf7ugs', 
-        api_key:'682215271415542',
-        api_secret:"U6m71klfo3p3UfG3iGEIRW-6Hxo"
+        api_key:process.env.API_KEY,
+        api_secret:process.env.API_SECRET
       });
       let bd=req.body;
       let body=JSON.parse(bd.form)

@@ -6,8 +6,8 @@ exports.otp_gen=async(req,res)=>{
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "kayaar450@gmail.com",
-        pass: "qwxi bhyk glrm wxyx"
+        user:process.env.GMAIL_USER,
+        pass:process.env.GMAIL_APP_PASS
       }
     });
     
