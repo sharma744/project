@@ -4,7 +4,7 @@ let bcrypt=require("bcrypt")
 let app=express();
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
-let conn=mongoose.connect("mongodb+srv://kayaar450_db_user:fDKrEjSbnVV1uIxS@cluster0.rzb4emq.mongodb.net//pet",{
+let conn=mongoose.connect("mongodb+srv://kayaar450_db_user:fDKrEjSbnVV1uIxS@cluster0.rzb4emq.mongodb.net/pet",{
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
