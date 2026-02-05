@@ -35,5 +35,5 @@ A Node.js backend for managing **user and pet profiles**. This server handles us
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/yourusername/pet-profile-app-server.git
+git clone https://github.com/sharma744/project
 
