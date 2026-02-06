@@ -16,15 +16,17 @@ exports.login=async(req,res)=>{
   let token=jwt.sign(body,"aayush",{expiresIn:12*60*60})
   let data=await db.findOne({
     email:body.gmail
-})
+}) 
+if(data==null){
+  res.send("error! no credential found")
+ } 
+  if(data.token==null){
   let dt=await db.updateOne({email:body.gmail,$set:{token:token}})
-  console.log(dt);
- console.log(data)
-   if(data==null){
-    res.send("error! no credential found")
-   }   
+  console.log(dt)
+  }
+ console.log(data)  
 
-   else if(otp.code==num && Date.now()<otp.expiry){
+  if(otp.code==num && Date.now()<otp.expiry){
       console.log("login started")
        let compare=await bcrypt.compare(body.password,data.password);
        console.log(compare)
