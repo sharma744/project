@@ -20,10 +20,6 @@ exports.login=async(req,res)=>{
 if(data==null){
   res.send("error! no credential found")
  } 
-  if(data.token==null){
-  let dt=await db.updateOne({email:body.gmail,$set:{token:token}})
-  console.log(dt)
-  }
  console.log(data)  
 
   if(otp.code==num && Date.now()<otp.expiry){
@@ -38,10 +34,13 @@ if(data==null){
     
     console.log(flag)
     if(flag==1){
+
       if(data.token==null){
+        let dt=await db.updateOne({email:body.gmail,$set:{token:token}})
     res.send(`success!${token}`)
       }
       else{
+      
         res.send(`success!${data.token}`)
       }
     }
