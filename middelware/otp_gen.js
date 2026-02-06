@@ -4,7 +4,9 @@ exports.otp_gen=async(req,res)=>{
   try{
     let body=req.body;
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.sendgrid.net",
+      port: 587,          // or 465 for SSL
+      secure: false,
       auth: {
         user:process.env.GMAIL_USER,
         pass:process.env.GMAIL_APP_PASS
@@ -17,7 +19,7 @@ exports.otp_gen=async(req,res)=>{
         expiry:Date.now()+5*60*1000
       }
       let send=await transporter.sendMail({
-        from:'"Pet App" <no-reply@petapp.com>',
+        from:'"Pet App" <aayusharma9711@gmail.com>',
         to:body.gmail,
         subject:"otp verification for pet site",
         text:`your otp is :${otp}`,
