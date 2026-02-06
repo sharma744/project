@@ -10,28 +10,38 @@ exports.login=async(req,res)=>{
   try{
     let body=req.body;
     console.log(body)
-    let token=jwt.sign(body,"aayush",{expiresIn:12*60*60})
     console.log(Otp[body.gmail])
     let otp=Otp[body.gmail]
     let num=Number(body.otp)
-    let data=await db.findOne({
-      email:body.gmail
-  })
+  let token=jwt.sign(body,"aayush",{expiresIn:12*60*60})
+  let data=await db.findOne({
+    email:body.gmail
+})
+  let dt=await db.updateOne({email:body.gmail,$set:{token:token}})
+  console.log(dt);
+ console.log(data)
    if(data==null){
     res.send("error! no credential found")
-   }
+   }   
+
    else if(otp.code==num && Date.now()<otp.expiry){
       console.log("login started")
-    let flag=0;
        let compare=await bcrypt.compare(body.password,data.password);
-         if(data!=null & compare){
+       console.log(compare)
+       let flag=0;
+         if(compare){
                 flag=1;
                 console.log("this is "+data)
             }  
     
     console.log(flag)
     if(flag==1){
-    res.send(`${token}`)
+      if(data.token==null){
+    res.send(`success!${token}`)
+      }
+      else{
+        res.send(`success!${data.token}`)
+      }
     }
     else{
         res.send("error in login");
@@ -84,15 +94,15 @@ exports.profile=async(req,res)=>{
       let body=JSON.parse(bd.form)
       let file=req.file;
       console.log(body);
-      let filename=__dirname+"/uploads/"+bd.email;
+      let filename=__dirname+"/uploads/"+bd.token;
     console.log(body)
     console.log(__dirname);
     fs.rename(file.path,filename,(err)=>{
         console.log(err)
     })
-    let chk=await prf.findOne({usrid:bd.mail})
+    let chk=await prf.findOne({usrid:bd.token})
     if(chk!=null){
-    let res=await cloudinary.uploader.destroy(bd.email)
+    let res=await cloudinary.uploader.destroy(bd.token)
     console.log("deleted"+res)
     }
     console.log(fs.existsSync(filename))
@@ -100,7 +110,7 @@ exports.profile=async(req,res)=>{
         unique_filename:true,
         use_filename:true,
         folder:"profiles",
-        public_id:bd.email
+        public_id:bd.token
       })
       console.log(result.secure_url);
       fs.unlink(filename,(err)=>{
@@ -141,16 +151,16 @@ exports.pet=async(req,res)=>{
       let bd=req.body;
       let body=JSON.parse(bd.form);
       let file=req.file;
-      console.log(bd.email);
-      let filename=__dirname+"/uploads/"+bd.email;
+      console.log(bd.token);
+      let filename=__dirname+"/uploads/"+bd.token;
         console.log(body)
     console.log(__dirname);
     fs.rename(file.path,filename,(err)=>{
         console.log(err)
     })
-    let chk=await pet.findOne({usrid:bd.mail})
+    let chk=await pet.findOne({usrid:bd.token})
     if(chk!=null){
-    let res=await cloudinary.uploader.destroy(bd.email)
+    let res=await cloudinary.uploader.destroy(bd.token)
     console.log("deleted"+res)
     }
     console.log(fs.existsSync(filename))
@@ -158,7 +168,7 @@ exports.pet=async(req,res)=>{
         unique_filename:true,
         use_filename:true,
         folder:"pet",
-        public_id:bd.email
+        public_id:bd.token
       })
       console.log(result.secure_url);
       fs.unlink(filename,(err)=>{

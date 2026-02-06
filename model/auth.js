@@ -8,7 +8,8 @@ let schema=mongoose.Schema({
         type:String,
         require:true,
         max:10
-    }
+    },
+    token:{type:String,default:null}
 })
 let coll=mongoose.model("login",schema);
 module.exports=coll;
