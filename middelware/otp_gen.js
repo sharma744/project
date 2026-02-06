@@ -3,7 +3,7 @@ let Otp=require("../docs")
 exports.otp_gen=async(req,res)=>{
   try{
     let body=req.body;
-    const transporter = nodemailer.createTransport({
+    const transporter =nodemailer.createTransport({
       host: "smtp.sendgrid.net",
       port: 587,          // or 465 for SSL
       secure: false,
@@ -12,7 +12,7 @@ exports.otp_gen=async(req,res)=>{
         pass:process.env.GMAIL_APP_PASS
       }
     });
-    
+    await transporter.verify();
       let otp=Math.floor(Math.random()*100000)
       Otp[body.gmail]={
         code:otp,
@@ -28,6 +28,7 @@ exports.otp_gen=async(req,res)=>{
       console.log(send)
       res.send("otp send succesfully")
     }catch(err){
+      console.log(err)
        res.send("error occured")
     }
      
